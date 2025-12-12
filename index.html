@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Пять Ночей с Фредди 2 — обратный отсчёт до премьеры</title>
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#121821;
+      --text:#e6ebf5;
+      --muted:#a8b3c7;
+      --accent:#7a5cff;
+      --accent-2:#3da9f5;
+      --border:#1a2330;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    img{max-width:100%;display:block}
+    a{color:var(--text)}
+    .container{
+      width:100%;
+      max-width:1120px;
+      margin-inline:auto;
+      padding:24px;
+    }
+    header.site-header{
+      position:sticky; top:0; z-index:10;
+      background:linear-gradient(180deg, rgba(11,15,20,0.95), rgba(11,15,20,0.75) 80%, rgba(11,15,20,0));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid var(--border);
+    }
+    header .container{padding-block:14px}
+    header h1{
+      margin:0;
+      font-size:clamp(18px, 2vw, 22px);
+      font-weight:600;
+      letter-spacing:0.2px;
+    }
+
+    main{display:block}
+
+    /* Постеры (без видимого заголовка) */
+    section{ margin-top:24px; }
+    .poster-grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .poster-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+    .poster-card:focus-within{ outline:2px solid var(--accent); outline-offset:2px; }
+    .poster-btn{
+      appearance:none; width:100%; border:0; background:transparent; padding:0;
+      cursor:pointer; display:block; text-align:left; color:inherit;
+    }
+    .poster-img{
+      width:100%; height:100%;
+      aspect-ratio: 2 / 3;
+      object-fit:cover;
+      background:#0e141b;
+      filter:saturate(1.05);
+      transition: transform 260ms ease, filter 260ms ease;
+    }
+    .poster-card:hover .poster-img,
+    .poster-btn:focus-visible .poster-img{
+      transform:scale(1.03);
+      filter:brightness(1.05) saturate(1.1);
+    }
+
+    /* Трейлеры */
+    .section-title{
+      font-size:clamp(18px, 3vw, 24px);
+      margin:0 0 12px 0;
+    }
+    .video-grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width:900px){
+      .video-grid{ grid-template-columns: 1fr 1fr; }
+    }
+    .video-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px;
+      box-shadow:var(--shadow);
+    }
+    .video-wrap{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      background:#0e141b;
+      border-radius:10px;
+      overflow:hidden;
+      border:1px solid var(--border);
+    }
+    .video-wrap iframe{
+      width:100%; height:100%;
+      border:0; display:block;
+    }
+
+    /* Hero (таймер) — ниже постеров и трейлеров */
+    .hero{
+      display:grid;
+      gap:20px;
+      padding-top:8px;
+      padding-bottom:8px;
+    }
+    .hero-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .hero h2{
+      margin:0 0 6px 0;
+      font-size:clamp(24px, 4vw, 38px);
+      letter-spacing:0.3px;
+    }
+    .sub{
+      color:var(--muted);
+      margin:0 0 18px 0;
+      font-size:clamp(14px, 2.2vw, 16px);
+    }
+
+    /* Таймер */
+    .timer-wrap{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+    #timer{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-variant-numeric: tabular-nums;
+      white-space:nowrap;
+      font-size:clamp(20px, 6vw, 44px);
+      font-weight:700;
+      color:var(--text);
+      text-shadow:0 0 0 rgba(0,0,0,0);
+      transition: text-shadow 160ms ease;
+      border-radius:10px;
+      padding:8px 12px;
+      background:linear-gradient(180deg, rgba(122,92,255,0.08), rgba(61,169,245,0.06));
+      border:1px solid var(--border);
+    }
+    #timer .accent{ color:var(--accent); text-shadow: 0 0 10px rgba(122,92,255,0.6); }
+    #timer .accent2{ color:var(--accent-2); text-shadow: 0 0 8px rgba(61,169,245,0.55); }
+    #timer.tick{ animation: pulse 260ms ease; }
+    @keyframes pulse{
+      0% { transform:scale(1); text-shadow:0 0 0 rgba(122,92,255,0.0); }
+      45% { transform:scale(1.015); text-shadow:0 0 16px rgba(122,92,255,0.55); }
+      100% { transform:scale(1); text-shadow:0 0 0 rgba(122,92,255,0.0); }
+    }
+    @media (prefers-reduced-motion: reduce){ #timer.tick{animation:none} }
+    #notice{
+      flex:1 1 100%;
+      font-size:clamp(14px, 3.3vw, 18px);
+      color:var(--muted);
+      margin-top:6px;
+      min-height:1.2em;
+    }
+    #notice.strong{
+      color:var(--text);
+      font-weight:700;
+      font-size:clamp(18px, 5vw, 28px);
+      text-shadow: 0 0 14px rgba(122,92,255,0.45);
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0;
+      background:rgba(5,8,12,0.82);
+      backdrop-filter: blur(6px);
+      display:none;
+      align-items:center; justify-content:center;
+      padding:18px; z-index:100;
+    }
+    .lightbox.open{ display:flex; }
+    .lightbox-inner{
+      position:relative;
+      max-width:min(96vw, 1100px);
+      max-height:90vh;
+    }
+    .lightbox-img{
+      max-width:100%; max-height:90vh;
+      border-radius:12px; border:1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.55);
+      background:#0e141b;
+    }
+    .lightbox-close{
+      position:absolute; top:-12px; right:-12px;
+      width:38px; height:38px; border-radius:50%;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, #1b2430, #121821);
+      color:var(--text);
+      display:grid; place-items:center;
+      font-size:20px; line-height:1; cursor:pointer;
+      box-shadow:var(--shadow);
+    }
+    .lightbox-close:hover{ filter:brightness(1.1) }
+    .lightbox-close:focus-visible{ outline:2px solid var(--accent) }
+
+    /* Footer */
+    footer{
+      margin-top:36px;
+      border-top:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(18,24,33,0.35), rgba(18,24,33,0.15));
+    }
+    footer .container{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding-top:16px;
+      padding-bottom:18px;
+    }
+    .dev{ color:var(--muted); font-size:14px; }
+    .tg{
+      display:inline-flex; align-items:center; gap:8px;
+      color:var(--text); text-decoration:none; padding:8px 10px;
+      border-radius:10px; border:1px solid var(--border);
+      background:linear-gradient(180deg, #121821, #0f141c);
+    }
+    .tg:hover{ filter:brightness(1.08) }
+    .tg:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+    .tg svg{ display:block }
+
+    :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Пять Ночей с Фредди 2 — обратный отсчёт до премьеры фильма</h1>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- 1) Таймер (hero) — размещён ниже контента -->
+      <section class="hero" aria-labelledby="countdown-title">
+        <div class="hero-card">
+          <h2 id="countdown-title">Пять Ночей с Фредди 2</h2>
+          <p class="sub">Премьера: 13 декабря 2025, 21:20</p>
+
+          <div class="timer-wrap" aria-live="off">
+            <div id="timer" aria-label="Обратный отсчёт"></div>
+            <div id="notice" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+      
+      <p>Прошёл год с момента страшных событий в пиццерии Freddy Fazbear`s, и слухи о произошедшем уже превратились в местную легенду. Легенда стала настолько популярной, что в честь событий в городе планируется провести фестиваль.
+Бывший охранник пиццерии Майк и офицер полиции Ванесса скрывают от Эбби, 11-летней сестры Майка, правду о судьбе её друзей-аниматроников. Однако когда девочка сбегает, чтобы снова встретиться с Фредди, Бонни, Чикой и Фокси, она вызывает цепь пугающих событий.</p>
+      
+      <!-- 2) Трейлеры -->
+      <section aria-labelledby="trailers-title">
+        <h3 id="trailers-title" class="section-title">Трейлеры</h3>
+        <div class="video-grid">
+          <div class="video-card">
+            <div class="video-wrap">
+              <iframe
+                src="https://www.youtube.com/embed/6PHqHa_cPXg"
+                title="Трейлер — Five Nights at Freddy’s 2"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin">
+              </iframe>
+            </div>
+          </div>
+          <div class="video-card">
+            <div class="video-wrap">
+              <iframe
+                src="https://www.youtube.com/embed/-Web_DUvbCI"
+                title="Teaser — Five Nights at Freddy’s 2"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- 3) Постеры: без видимого заголовка, только сетка -->
+      <section class="posters" aria-label="Постеры">
+        <div class="poster-grid">
+          <div class="poster-card">
+            <button class="poster-btn" data-src="poster1.png" aria-label="Открыть постер 1">
+              <img class="poster-img" src="poster1.png" loading="lazy" alt="Постер 1" />
+            </button>
+          </div>
+          <div class="poster-card">
+            <button class="poster-btn" data-src="poster2.png" aria-label="Открыть постер 2">
+              <img class="poster-img" src="poster2.png" loading="lazy" alt="Постер 2" />
+            </button>
+          </div>
+          <div class="poster-card">
+            <button class="poster-btn" data-src="poster3.png" aria-label="Открыть постер 3">
+              <img class="poster-img" src="poster3.png" loading="lazy" alt="Постер 3" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      
+
+      
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="dev">разработчик: GloomSpark</div>
+      <a class="tg" href="https://t.me/NightmareFredBear/" target="_blank" rel="noopener noreferrer" aria-label="Перейти в Telegram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="22" height="22" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#37aee2"/>
+              <stop offset="1" stop-color="#1e96c8"/>
+            </linearGradient>
+          </defs>
+          <circle cx="120" cy="120" r="120" fill="url(#g)"/>
+          <path fill="#fff" d="M48 120c49-21 81-35 97-42 46-19 55-22 61-22 1 0 3 0 4 1 1 1 1 2 1 3s0 2-1 3c-1 1-2 2-3 3-1 1-18 12-52 35-34 23-58 39-73 48-1 1-3 1-5 1-1 0-3 0-4-1-1-1-1-2-1-3 0-1 1-2 2-3 1-1 13-12 36-32 23-20 41-36 53-46 1-1 2-2 2-3s-1-1-2-1c-1 0-3 0-6 1-3 1-9 3-18 7-9 4-21 9-35 16-14 7-24 12-30 15-6 2-10 4-12 5-3 1-5 2-8 3-2 1-4 1-5 1-1 0-2 0-3-1-1-1-2-2-1-3 0-1 1-2 3-3 2-1 6-3 13-6z"/>
+        </svg>
+        <span>@NightmareFredBear</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр изображения" aria-hidden="true">
+    <div class="lightbox-inner" role="document">
+      <button class="lightbox-close" type="button" aria-label="Закрыть просмотр">&times;</button>
+      <img id="lightbox-img" class="lightbox-img" alt="Постер, увеличенное изображение" />
+    </div>
+  </div>
+
+  <script>
+    // Целевая дата: 13 декабря 2025, 21:20:00 (локальное время пользователя)
+    const targetDate = new Date(2025, 11, 13, 21, 20, 0);
+
+    const timerEl = document.getElementById('timer');
+    const noticeEl = document.getElementById('notice');
+
+    // Вибрация: всегда включена на мобильных при поддержке и после взаимодействия
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent)
+                  || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) <= 900);
+    const vibrateSupported = typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function';
+
+    let userInteracted = false;
+    let lastWholeSeconds = null;
+    let rafId = null;
+
+    const pad2 = (n) => String(n).padStart(2, '0');
+    const pad3 = (n) => String(n).padStart(3, '0');
+
+    function formatParts(msRemaining){
+      const total = Math.max(0, msRemaining);
+      const dayMs = 24*60*60*1000;
+      const hourMs = 60*60*1000;
+      const minMs = 60*1000;
+      const secMs = 1000;
+
+      let rest = total;
+      const days = Math.floor(rest / dayMs); rest %= dayMs;
+      const hours = Math.floor(rest / hourMs); rest %= hourMs;
+      const mins = Math.floor(rest / minMs); rest %= minMs;
+      const secs = Math.floor(rest / secMs);
+      const ms = rest % secMs;
+
+      return { days, hours, mins, secs, ms };
+    }
+
+    function renderTimer(parts){
+      const d = parts.days;
+      const h = pad2(parts.hours);
+      const m = pad2(parts.mins);
+      const s = pad2(parts.secs);
+      const ms = pad3(parts.ms);
+
+      timerEl.innerHTML =
+        '<span class="accent2">'+ d +'д</span> ' +
+        '<span>'+ h +'ч</span> ' +
+        '<span>'+ m +'м</span> ' +
+        '<span>'+ s +'с</span> ' +
+        '<span class="accent">'+ ms +'мс</span>';
+    }
+
+    function renderZero(){
+      timerEl.innerHTML =
+        '<span class="accent2">0д</span> ' +
+        '<span>00ч</span> ' +
+        '<span>00м</span> ' +
+        '<span>00с</span> ' +
+        '<span class="accent">000мс</span>';
+    }
+
+    // Уведомления: ≤2 мин → ≤5 мин → ≤10 мин → ≤30 мин → ≤1 часа → пусто
+    function renderNotice(msRemaining){
+      if (msRemaining <= 0){
+        noticeEl.textContent = 'Премьера началась!';
+        noticeEl.classList.add('strong');
+        return;
+      }
+      noticeEl.classList.remove('strong');
+
+      const m1h  = 60*60*1000;
+      const m30m = 30*60*1000;
+      const m10m = 10*60*1000;
+      const m5m  =  5*60*1000;
+      const m2m  =  2*60*1000;
+
+      let msg = '';
+      if (msRemaining <= m2m){
+        msg = 'Премьера сейчас начнётся';
+      } else if (msRemaining <= m5m){
+        msg = 'До премьеры осталось менее 5 минут';
+      } else if (msRemaining <= m10m){
+        msg = 'До премьеры осталось менее 10 минут';
+      } else if (msRemaining <= m30m){
+        msg = 'До премьеры осталось меньше 30 минут';
+      } else if (msRemaining <= m1h){
+        msg = 'Скоро премьера';
+      } else {
+        msg = '';
+      }
+      noticeEl.textContent = msg;
+    }
+
+    function maybeVibrateOnSecondChange(currentWholeSeconds){
+      if (lastWholeSeconds === null){
+        lastWholeSeconds = currentWholeSeconds;
+        return;
+      }
+      if (currentWholeSeconds !== lastWholeSeconds){
+        lastWholeSeconds = currentWholeSeconds;
+
+        // Лёгкая пульсация
+        timerEl.classList.remove('tick');
+        void timerEl.offsetWidth;
+        timerEl.classList.add('tick');
+
+        // Вибрация на мобильных, после взаимодействия
+        if (isMobile && vibrateSupported && userInteracted){
+          try { navigator.vibrate(15); } catch(e){}
+        }
+      }
+    }
+
+    function loop(){
+      const now = Date.now();
+      const msRemaining = targetDate.getTime() - now;
+
+      if (msRemaining <= 0){
+        cancelAnimationFrame(rafId);
+        renderZero();
+        renderNotice(0);
+        return;
+      }
+
+      const parts = formatParts(msRemaining);
+      renderTimer(parts);
+      renderNotice(msRemaining);
+
+      const wholeSeconds = Math.floor(msRemaining / 1000);
+      maybeVibrateOnSecondChange(wholeSeconds);
+
+      rafId = requestAnimationFrame(loop);
+    }
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    let lastFocusedEl = null;
+
+    function openLightbox(src, alt){
+      lastFocusedEl = document.activeElement;
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || 'Постер, увеличенное изображение';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      setTimeout(()=>{ lightboxImg.src=''; },100);
+      if (lastFocusedEl && typeof lastFocusedEl.focus === 'function'){
+        lastFocusedEl.focus();
+      }
+    }
+    lightbox.addEventListener('click', (e)=>{
+      if (e.target === lightbox || e.target === closeBtn){ closeLightbox(); }
+    });
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === 'Escape' && lightbox.classList.contains('open')){ closeLightbox(); }
+    });
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.poster-btn');
+      if (!btn) return;
+      const img = btn.querySelector('img');
+      const src = btn.getAttribute('data-src') || (img ? img.currentSrc || img.src : '');
+      const alt = img ? img.alt : '';
+      if (src){ openLightbox(src, alt); }
+    });
+
+    // Фиксация первого взаимодействия (для вибрации)
+    function markUserInteraction(){
+      userInteracted = true;
+      document.removeEventListener('pointerdown', markUserInteraction);
+      document.removeEventListener('click', markUserInteraction);
+      document.removeEventListener('touchstart', markUserInteraction);
+    }
+    document.addEventListener('pointerdown', markUserInteraction, { once:true, passive:true });
+    document.addEventListener('click', markUserInteraction, { once:true, passive:true });
+    document.addEventListener('touchstart', markUserInteraction, { once:true, passive:true });
+
+    // Инициализация
+    function init(){
+      const initialRemaining = targetDate.getTime() - Date.now();
+      if (initialRemaining <= 0){
+        renderZero();
+        renderNotice(0);
+        return;
+      }
+      renderTimer(formatParts(initialRemaining));
+      renderNotice(initialRemaining);
+      rafId = requestAnimationFrame(loop);
+    }
+    if (document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', init, { once:true });
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
